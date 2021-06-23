@@ -12,12 +12,13 @@ public class diabloDatabase {
         String username = scan.nextLine();
 
         PreparedStatement stmt = connection.prepareStatement
-                ("SELECT u.user_name, COUNT(g.name) AS count\n" +
-                        "FROM users AS u\n" +
-                        "         JOIN users_games AS ug on u.id = ug.user_id\n" +
-                        "         JOIN games g on ug.game_id = g.id\n" +
-                        "WHERE u.user_name  = ?\n" +
-                        "GROUP BY user_name;");
+                ("""
+                        SELECT u.user_name, COUNT(g.name) AS count
+                        FROM users AS u
+                                 JOIN users_games AS ug on u.id = ug.user_id
+                                 JOIN games g on ug.game_id = g.id
+                        WHERE u.user_name  = ?
+                        GROUP BY user_name;""");
 
         PreparedStatement uName = connection.prepareStatement
                 ("SELECT *  FROM users WHERE user_name = ?");
