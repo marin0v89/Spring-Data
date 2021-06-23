@@ -35,5 +35,6 @@ public class diabloDatabase {
                     (un.getString("first_name") + " " + un.getString("last_name")
                             + " has played " + rs.getString("count") + " games");
         }
+        connection.close();
     }
 }
