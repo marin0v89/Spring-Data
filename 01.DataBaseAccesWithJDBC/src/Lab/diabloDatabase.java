@@ -29,12 +29,16 @@ public class diabloDatabase {
         ResultSet rs = stmt.executeQuery();
         ResultSet un = uName.executeQuery();
 
-        while (rs.next() && un.next()) {
-            System.out.println("User: " + username);
-            System.out.println
-                    (un.getString("first_name") + " " + un.getString("last_name")
-                            + " has played " + rs.getString("count") + " games");
+        if (!rs.isBeforeFirst()) {
+            System.out.println("No such user exists");
+        } else {
+            while (rs.next() && un.next()) {
+                System.out.println("User: " + username);
+                System.out.println
+                        (un.getString("first_name") + " " + un.getString("last_name")
+                                + " has played " + rs.getString("count") + " games");
+            }
+            connection.close();
         }
-        connection.close();
     }
 }
