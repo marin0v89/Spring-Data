@@ -31,8 +31,27 @@ public class Main {
         }
     }
 
-    private static void exerciseSeven() {
+    private static void exerciseSeven() throws SQLException {
+        List<String> names = new LinkedList<>();
 
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT name FROM minions;");
+
+        while (resultSet.next()) {
+            names.add(resultSet.getString(1));
+        }
+        int start = 0;
+        int end = names.size() - 1;
+        for (int i = 0; i < names.size(); i++) {
+            System.out.println(i % 2 == 0
+                    ? names.get(start++)
+                    : names.get(end--));
+//            if (i % 2 == 0) {
+//                System.out.println(names.get(start++));
+//            } else {
+//                System.out.println(names.get(end--));
+//            }
+        }
     }
 
     private static void exerciseSix() {
