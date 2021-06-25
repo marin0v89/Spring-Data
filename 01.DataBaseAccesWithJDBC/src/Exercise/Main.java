@@ -28,7 +28,34 @@ public class Main {
             case "5" -> exerciseFive();
             case "6" -> exerciseSix();
             case "7" -> exerciseSeven();
+            case "8" -> exerciseEight();
+            case "9" -> exerciseNine();
         }
+    }
+
+    private static void exerciseNine() throws IOException, SQLException {
+        System.out.println("Enter minion ID:");
+        int id = Integer.parseInt(reader.readLine());
+
+        CallableStatement callableStatement = connection.prepareCall
+                ("CALL usp_get_older(?);");
+
+        callableStatement.setInt(1, id);
+        callableStatement.execute();
+
+        preparedStatement = connection.prepareStatement
+                ("SELECT name ,age FROM minions");
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        while (resultSet.next()) {
+            System.out.printf
+                    ("%s %d%n", resultSet.getString(1),
+                            resultSet.getInt(2));
+        }
+    }
+
+    private static void exerciseEight() {
     }
 
     private static void exerciseSeven() throws SQLException {
@@ -54,7 +81,21 @@ public class Main {
         }
     }
 
-    private static void exerciseSix() {
+    private static void exerciseSix() throws IOException, SQLException {
+        System.out.println("Enter villain id");
+        int id = Integer.parseInt(reader.readLine());
+
+        int rows = deletedVillainsAffected(id);
+        String villainName = findVillainName(id);
+
+        deleteVillain(id);
+        if (rows == 0) {
+            System.out.println("No such villain was found");
+            return;
+        }
+
+        System.out.printf("%s was deleted%n", villainName);
+        System.out.printf("%d minions released", rows);
     }
 
     private static void exerciseFive() throws IOException, SQLException {
@@ -91,37 +132,8 @@ public class Main {
     }
 
     private static void exerciseFour() throws IOException, SQLException {
-//        System.out.println("Enter minion input:");
-//        String[] minionTokens = reader.readLine().split("\\s+");
-//        String minionName = minionTokens[0];
-//        int minionAge = Integer.parseInt(minionTokens[1]);
-//        String minionTowns = minionTokens[2];
-//
-//        System.out.println("Enter villain input:");
-//        String villainName = reader.readLine();
-//
-//        if (!checkEntityByName(minionTowns)) {
-//            insertIntoTowns(minionTowns);
-//        }
+
     }
-//
-//    private static void insertIntoTowns(String minionTowns) throws SQLException {
-//        PreparedStatement preparedStatement = connection.prepareStatement
-//                ("INSERT INTO towns (name, country) VALUE(?, ?)");
-//        preparedStatement.setString(1, minionTowns);
-//        preparedStatement.setString(2, "NULL");
-//        preparedStatement.execute();
-//    }
-//
-//    private static boolean checkEntityByName(String entity) throws SQLException {
-//        PreparedStatement preparedStatement = connection.prepareStatement
-//                ("SELECT * FROM towns WHERE name = ?");
-//
-//        preparedStatement.setString(1, entity);
-//        ResultSet resultSet = preparedStatement.executeQuery();
-//
-//        return resultSet.next();
-//    }
 
     private static void exerciseThree() throws IOException, SQLException {
         Set<String> result = new LinkedHashSet<>();
@@ -174,6 +186,34 @@ public class Main {
             System.out.printf("%s %d%n%n", resultSet.getString("name")
                     , resultSet.getInt(2));
         }
+    }
+
+    private static int deletedVillainsAffected(int id) throws SQLException {
+        preparedStatement = connection.prepareStatement
+                ("DELETE FROM minions_villains WHERE villain_id = ?");
+        preparedStatement.setInt(1, id);
+
+        return preparedStatement.executeUpdate();
+    }
+
+    private static String findVillainName(int id) throws SQLException {
+        String name = "";
+        preparedStatement = connection.prepareStatement
+                ("SELECT name FROM villains WHERE id = ?;");
+        preparedStatement.setInt(1, id);
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        while (resultSet.next()) {
+            name = resultSet.getString(1);
+        }
+        return name;
+    }
+
+    private static int deleteVillain(int id) throws SQLException {
+        preparedStatement = connection.prepareStatement
+                ("DELETE FROM villains WHERE id = ?");
+        preparedStatement.setInt(1, id);
+        return preparedStatement.executeUpdate();
     }
 
     private static PreparedStatement prepFunction(String query) throws SQLException {
