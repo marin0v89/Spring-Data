@@ -55,14 +55,45 @@ public class Main {
         }
     }
 
-    private static void exerciseEight() {
+    private static void exerciseEight() throws IOException, SQLException {
+        System.out.println("Enter minion ID`s (separated by space):");
+
+        String[] idTokens = reader.readLine().split("\\s+");
+
+        List<String> minionIds = new LinkedList<>();
+        Collections.addAll(minionIds, idTokens);
+
+        //Preventing with for cycle adding more or less id`s as input.
+
+        for (String minionId : minionIds) {
+
+            query = "UPDATE minions " +
+                    "SET age = age + 1 , name = LOWER(name)" +
+                    "WHERE id IN (?);";
+
+            preparedStatement = prepFunction(query);
+            preparedStatement.setString(1, minionId);
+
+            preparedStatement.executeUpdate();
+        }
+        query = "SELECT name, age FROM minions ";
+
+        Statement print = connection.createStatement();
+        ResultSet resultSet = print.executeQuery(query);
+
+        while (resultSet.next()) {
+            System.out.printf("%s, %s%n",
+                    resultSet.getString(1), resultSet.getInt(2));
+        }
     }
 
     private static void exerciseSeven() throws SQLException {
         List<String> names = new LinkedList<>();
 
+        query = "SELECT name FROM minions;";
+
         Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT name FROM minions;");
+        ResultSet resultSet = statement.executeQuery(query);
 
         while (resultSet.next()) {
             names.add(resultSet.getString(1));
