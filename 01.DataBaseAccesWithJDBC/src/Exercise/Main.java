@@ -162,7 +162,7 @@ public class Main {
         System.out.println(String.join(", ", towns));
     }
 
-    private static void exerciseFour() throws IOException, SQLException {
+    private static void exerciseFour() {
 
     }
 
@@ -255,15 +255,15 @@ public class Main {
 
         reader = new BufferedReader(new InputStreamReader(System.in));
 
-//        System.out.println("Enter username:");
-//        String username = reader.readLine();
-//
-//        System.out.println("Enter password:");
-//        String password = reader.readLine();
+        System.out.println("Enter username:");
+        String username = reader.readLine();
+
+        System.out.println("Enter password:");
+        String password = reader.readLine();
 
         Properties properties = new Properties();
-        properties.setProperty("user", "root");//username);
-        properties.setProperty("password", "12345"); //password);
+        properties.setProperty("user", username);
+        properties.setProperty("password", password);
         return DriverManager.getConnection
                 (URL + DATABASE, properties);
     }
