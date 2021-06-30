@@ -17,7 +17,6 @@ public class softUniDatabase {
         stmt.setString(1, salary);
 
         ResultSet rs = stmt.executeQuery();
-
         while (rs.next()) {
             System.out.println(rs.getString("first_name") + " " + rs.getString("last_name"));
         }
