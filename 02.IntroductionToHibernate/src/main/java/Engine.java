@@ -1,7 +1,11 @@
+import entities.Employee;
+
 import javax.persistence.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
+import java.util.List;
 
 public class Engine implements Runnable {
 
@@ -22,8 +26,9 @@ public class Engine implements Runnable {
             int exerciseNumber = Integer.parseInt(reader.readLine());
 
             switch (exerciseNumber) {
-                case 2 -> exerciseTwo();
-                case 3 -> exerciseThree();
+                case 2 -> problemTwo();
+                case 3 -> problemThree();
+                case 4 -> problemFour();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -32,7 +37,18 @@ public class Engine implements Runnable {
         }
     }
 
-    private void exerciseThree() throws IOException {
+    private void problemFour() {
+        List<Employee> salary = entityManager.createQuery("SELECT e FROM Employee e " +
+                "WHERE e.salary > :slry", Employee.class)
+                .setParameter("slry", new BigDecimal(50000))
+                .getResultList();
+
+        for (Employee s : salary) {
+            System.out.println(s.getFirstName());
+        }
+    }
+
+    private void problemThree() throws IOException {
         System.out.println("Enter the name :");
         String[] fullName = reader.readLine().split("\\s+");
 
@@ -50,7 +66,7 @@ public class Engine implements Runnable {
                 : "No");
     }
 
-    private void exerciseTwo() {
+    private void problemTwo() {
         entityManager.getTransaction().begin();
         Query query = entityManager.createQuery
                 ("UPDATE Town t SET t.name = upper(t.name)" +
