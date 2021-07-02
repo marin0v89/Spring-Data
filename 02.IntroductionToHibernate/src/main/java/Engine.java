@@ -29,11 +29,29 @@ public class Engine implements Runnable {
                 case 2 -> problemTwo();
                 case 3 -> problemThree();
                 case 4 -> problemFour();
+                case 5 -> problemFive();
             }
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
             entityManager.close();
+        }
+    }
+
+    private void problemFive() {
+        List<Employee> resultList = entityManager.createQuery
+                ("SELECT e FROM Employee e " +
+                        "WHERE e.department.name = :d_name " +
+                        "ORDER BY e.salary, e.id", Employee.class)
+                .setParameter("d_name", "Research and Development")
+                .getResultList();
+
+        for (Employee e : resultList) {
+            System.out.printf("%s %s %s - %.2f%n",
+                    e.getFirstName(),
+                    e.getLastName(),
+                    e.getDepartment().getName(),
+                    e.getSalary());
         }
     }
 
