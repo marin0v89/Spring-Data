@@ -32,7 +32,22 @@ public class Engine implements Runnable {
         }
     }
 
-    private void exerciseThree() {
+    private void exerciseThree() throws IOException {
+        System.out.println("Enter the name :");
+        String[] fullName = reader.readLine().split("\\s+");
+
+        String firstName = fullName[0];
+        String lastName = fullName[1];
+
+        Long singleResult = entityManager.createQuery("SELECT COUNT (e) FROM Employee e " +
+                "WHERE e.firstName = :f_name AND e.lastName = :l_name", Long.class)
+                .setParameter("f_name", firstName)
+                .setParameter("l_name", lastName)
+                .getSingleResult();
+
+        System.out.println(singleResult == 1
+                ? "Yes"
+                : "No");
     }
 
     private void exerciseTwo() {
