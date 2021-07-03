@@ -1,3 +1,4 @@
+import entities.Address;
 import entities.Employee;
 
 import javax.persistence.*;
@@ -20,22 +21,63 @@ public class Engine implements Runnable {
     @Override
     public void run() {
 
-        System.out.println("Select exercise number (starting from 2) :");
+        System.out.println("Select exercise number (starting from 2), " +
+                "to end the program type \"end\" :");
 
         try {
-            int exerciseNumber = Integer.parseInt(reader.readLine());
-
+            String exerciseNumber = reader.readLine();
             switch (exerciseNumber) {
-                case 2 -> problemTwo();
-                case 3 -> problemThree();
-                case 4 -> problemFour();
-                case 5 -> problemFive();
+                case "2" -> problemTwo();
+                case "3" -> problemThree();
+                case "4" -> problemFour();
+                case "5" -> problemFive();
+                case "6" -> problemSix();
+                case "7" -> problemSeven();
             }
+
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
             entityManager.close();
         }
+    }
+
+    private void problemSeven() {
+    }
+
+    private void problemSix() throws IOException {
+        System.out.println("Enter employee`s last name :");
+        String lastName = reader.readLine();
+
+        Address address = insertAddress("Vitoshka 15");
+        try {
+            Employee employee = entityManager.createQuery("SELECT e FROM Employee e " +
+                    "WHERE e.lastName = :lstName", Employee.class)
+                    .setParameter("lstName", lastName)
+                    .getSingleResult();
+
+            entityManager.getTransaction().begin();
+            employee.setAddress(address);
+            entityManager.getTransaction().commit();
+
+        } catch (NoResultException e) {
+            System.out.println("Invalid last name");
+        }finally {
+            System.out.println(lastName + " added to the new address");
+        }
+    }
+
+    //new POJO class
+    private Address insertAddress(String addressText) {
+        Address address = new Address();
+        address.setText(addressText);
+
+        entityManager.getTransaction().begin();
+        entityManager.persist(address);
+        entityManager.getTransaction().commit();
+
+        System.out.println();
+        return address;
     }
 
     private void problemFive() {
