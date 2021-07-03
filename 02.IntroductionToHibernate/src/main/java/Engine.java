@@ -40,6 +40,7 @@ public class Engine implements Runnable {
                 case "9" -> problemNine();
                 case "10" -> problemTen();
                 case "11" -> problemEleven();
+                case "12" -> problemTwelve();
             }
 
         } catch (IOException e) {
@@ -49,7 +50,38 @@ public class Engine implements Runnable {
         }
     }
 
-    private void problemEleven() {
+    private void problemTwelve() {
+        List<Employee> resultList = entityManager.createQuery
+                ("SELECT e FROM  Employee  e " +
+                "WHERE e.salary NOT BETWEEN 30000 AND 70000 " +
+                "GROUP BY e.department.name " +
+                "ORDER BY e.salary DESC", Employee.class)
+                .getResultList();
+
+        for (Employee employee : resultList) {
+            System.out.printf("%s - %.2f%n",
+                    employee.getDepartment().getName(),
+                    employee.getSalary());
+        }
+    }
+
+    private void problemEleven() throws IOException {
+        System.out.println("Enter input :");
+        String input = reader.readLine();
+
+        List<Employee> employeeNames = entityManager.createQuery
+                ("SELECT e FROM Employee e " +
+                        "WHERE e.firstName LIKE :name", Employee.class)
+                .setParameter("name", input + "%")
+                .getResultList();
+
+        for (Employee employee : employeeNames) {
+            System.out.printf("%s %s - %s - ($%.2f)%n",
+                    employee.getFirstName(),
+                    employee.getLastName(),
+                    employee.getJobTitle(),
+                    employee.getSalary());
+        }
     }
 
     private void problemTen() {
