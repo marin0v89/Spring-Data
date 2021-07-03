@@ -1,11 +1,13 @@
 import entities.Address;
 import entities.Employee;
+import entities.Project;
 
 import javax.persistence.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.util.Comparator;
 import java.util.List;
 
 public class Engine implements Runnable {
@@ -33,6 +35,8 @@ public class Engine implements Runnable {
                 case "5" -> problemFive();
                 case "6" -> problemSix();
                 case "7" -> problemSeven();
+                case "8" -> problemEight();
+                case "9" -> problemNine();
             }
 
         } catch (IOException e) {
@@ -42,7 +46,52 @@ public class Engine implements Runnable {
         }
     }
 
+    private void problemNine() {
+        List<Project> resultList = entityManager.createQuery
+                ("SELECT p FROM Project p " +
+                        "ORDER BY p.name", Project.class)
+                .setMaxResults(10)
+                .getResultList();
+
+        for (Project project : resultList) {
+            System.out.printf("Project name: %s%n " +
+                            " \tProject Description: %s%n " +
+                            " \tProject Start Date:%s%n " +
+                            " \tProject End Date: %s%n ",
+                    project.getName(), project.getDescription(),
+                    project.getStartDate(), project.getEndDate());
+        }
+    }
+
+    private void problemEight() throws IOException {
+        System.out.println("Enter employee id :");
+        int id = Integer.parseInt(reader.readLine());
+
+        Employee employee = entityManager.find(Employee.class, id);
+        System.out.printf("%s %s - %s%n"
+                , employee.getFirstName()
+                , employee.getLastName()
+                , employee.getJobTitle());
+        employee
+                .getProjects()
+                .stream()
+                .sorted(Comparator.comparing(Project::getName))
+                .forEach(p -> System.out.printf("\t%s%n", p.getName()));
+    }
+
     private void problemSeven() {
+        List<Address> resultList = entityManager.createQuery("SELECT a FROM Address a " +
+                "ORDER BY a.employees.size DESC", Address.class)
+                .setMaxResults(10)
+                .getResultList();
+
+        for (Address address : resultList) {
+            System.out.printf("%s, %s - %d employees%n",
+                    address.getText(),
+                    address.getTown() == null
+                            ? "Unknown" : address.getTown().getName(),
+                    address.getEmployees().size());
+        }
     }
 
     private void problemSix() throws IOException {
