@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 public class Engine implements Runnable {
 
@@ -37,12 +38,42 @@ public class Engine implements Runnable {
                 case "7" -> problemSeven();
                 case "8" -> problemEight();
                 case "9" -> problemNine();
+                case "10" -> problemTen();
+                case "11" -> problemEleven();
             }
 
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
             entityManager.close();
+        }
+    }
+
+    private void problemEleven() {
+    }
+
+    private void problemTen() {
+
+        entityManager.getTransaction().begin();
+        int affectedEmployees = entityManager.createQuery
+                ("UPDATE Employee e " +
+                        "SET e.salary = e.salary * 1.12 " +
+                        "WHERE e.department.id IN :ids")
+                .setParameter("ids", Set.of(1, 2, 4, 11))
+                .executeUpdate();
+        entityManager.getTransaction().commit();
+
+        List<Employee> updated = entityManager.createQuery
+                ("SELECT e FROM Employee e " +
+                        "WHERE e.department.id IN :d_id", Employee.class)
+                .setParameter("d_id", Set.of(1, 2, 4, 11))
+                .getResultList();
+
+        for (Employee employee : updated) {
+            System.out.printf("%s %s (%.2f)%n",
+                    employee.getFirstName(),
+                    employee.getLastName(),
+                    employee.getSalary());
         }
     }
 
