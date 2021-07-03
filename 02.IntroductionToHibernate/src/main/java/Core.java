@@ -12,12 +12,12 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
-public class Engine implements Runnable {
+public class Core implements Runnable {
 
     private final EntityManager entityManager;
     private final BufferedReader reader;
 
-    public Engine(EntityManager entityManager) {
+    public Core(EntityManager entityManager) {
         this.entityManager = entityManager;
         this.reader = new BufferedReader(new InputStreamReader(System.in));
     }
