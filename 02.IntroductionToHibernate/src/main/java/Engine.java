@@ -59,11 +59,10 @@ public class Engine implements Runnable {
             entityManager.getTransaction().begin();
             employee.setAddress(address);
             entityManager.getTransaction().commit();
+            System.out.println(lastName + " added to the new address");
 
         } catch (NoResultException e) {
             System.out.println("Invalid last name");
-        }finally {
-            System.out.println(lastName + " added to the new address");
         }
     }
 
