@@ -1,6 +1,7 @@
 import entities.Address;
 import entities.Employee;
 import entities.Project;
+import entities.Town;
 
 import javax.persistence.*;
 import java.io.BufferedReader;
@@ -24,8 +25,7 @@ public class Engine implements Runnable {
     @Override
     public void run() {
 
-        System.out.println("Select exercise number (starting from 2), " +
-                "to end the program type \"end\" :");
+        System.out.println("Select exercise number (starting from 2) :");
 
         try {
             String exerciseNumber = reader.readLine();
@@ -41,6 +41,7 @@ public class Engine implements Runnable {
                 case "10" -> problemTen();
                 case "11" -> problemEleven();
                 case "12" -> problemTwelve();
+                case "13" -> problemThirteen();
             }
 
         } catch (IOException e) {
@@ -50,12 +51,47 @@ public class Engine implements Runnable {
         }
     }
 
+    private void problemThirteen() throws IOException {
+        // For this problem i set the Addresses entity address relation to cascade = CascadeType.ALL)
+        System.out.println("Enter town name :");
+        String townName = reader.readLine();
+
+        Town town = entityManager.createQuery
+                ("SELECT t FROM Town t " +
+                        "WHERE t.name = :twn", Town.class)
+                .setParameter("twn", townName)
+                .getSingleResult();
+
+        int removed = removeAddresses(town.getId());
+        entityManager.getTransaction().begin();
+        entityManager.remove(town);
+        entityManager.getTransaction().commit();
+
+        System.out.printf("%d address in %s deleted", removed, townName);
+
+    }
+
+    private int removeAddresses(int id) {
+        List<Address> address = entityManager.createQuery
+                ("SELECT a FROM Address a " +
+                        "WHERE a.town.id = :i_id", Address.class)
+                .setParameter("i_id", id)
+                .getResultList();
+
+        entityManager.getTransaction().begin();
+        for (Address a : address) {
+            entityManager.remove(a);
+        }
+        entityManager.getTransaction().commit();
+        return address.size();
+    }
+
     private void problemTwelve() {
         List<Employee> resultList = entityManager.createQuery
                 ("SELECT e FROM  Employee  e " +
-                "WHERE e.salary NOT BETWEEN 30000 AND 70000 " +
-                "GROUP BY e.department.name " +
-                "ORDER BY e.salary DESC", Employee.class)
+                        "WHERE e.salary NOT BETWEEN 30000 AND 70000 " +
+                        "GROUP BY e.department.name " +
+                        "ORDER BY e.salary DESC", Employee.class)
                 .getResultList();
 
         for (Employee employee : resultList) {
