@@ -9,7 +9,7 @@ import javax.persistence.MappedSuperclass;
 public abstract class CoreEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY )
-    private long id;
+    private Long id;
 
 
     public CoreEntity() {
