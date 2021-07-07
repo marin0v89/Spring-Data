@@ -1,9 +1,9 @@
 package Entity.p03_uni;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Set;
+
 import Entity.CoreEntity;
 
 @Entity
@@ -11,15 +11,30 @@ import Entity.CoreEntity;
 public class Course extends CoreEntity {
     @Column(nullable = false)
     private String name;
+
     @Column(columnDefinition = "TEXT")
     private String description;
+
     @Column(name = "start_date")
     private LocalDate startDate;
+
     @Column(name = "end_date")
     private LocalDate endDate;
+
     private Integer credits;
 
+    @ManyToMany
+    private Set<Student> students;
+
     public Course() {
+    }
+
+    public Set<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(Set<Student> students) {
+        this.students = students;
     }
 
     public String getName() {
