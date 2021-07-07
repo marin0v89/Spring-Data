@@ -1,10 +1,12 @@
-package Entity;
+package Entity.p01;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+
+import Entity.CoreEntity;
 
 @Entity
 @Table(name = "wizard_deposits")
