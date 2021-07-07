@@ -1,23 +1,21 @@
 package Entity.p04_hospital;
 
+
 import Entity.CoreEntity;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import java.util.Set;
 
-@Entity(name = "diagnoses")
-public class Diagnose extends CoreEntity {
-
-    @Column(nullable = false, length = 30)
+@Entity(name = "medicaments")
+public class Medicament extends CoreEntity {
+    @Column(nullable = false, length = 40)
     private String name;
-
-    @Column(length = 100)
-    private String comments;
-
 
     private Set<Patient> patients;
 
-    @ManyToMany(mappedBy = "diagnoses", targetEntity = Patient.class)
+    @ManyToMany(mappedBy = "prescriptions")
     public Set<Patient> getPatients() {
         return this.patients;
     }
@@ -32,13 +30,5 @@ public class Diagnose extends CoreEntity {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getComments() {
-        return this.comments;
-    }
-
-    public void setComments(String comments) {
-        this.comments = comments;
     }
 }
