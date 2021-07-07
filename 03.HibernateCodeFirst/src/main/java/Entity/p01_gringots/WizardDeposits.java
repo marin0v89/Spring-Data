@@ -1,4 +1,4 @@
-package Entity.p01;
+package Entity.p01_gringots;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

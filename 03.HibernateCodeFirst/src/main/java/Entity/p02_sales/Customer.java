@@ -1,4 +1,4 @@
-package Entity.p02;
+package Entity.p02_sales;
 
 import Entity.CoreEntity;
 
