@@ -26,7 +26,18 @@ public class Course extends CoreEntity {
     @ManyToMany
     private Set<Student> students;
 
+    @ManyToOne
+    private Teacher teacher;
+
     public Course() {
+    }
+
+    public Teacher getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
     }
 
     public Set<Student> getStudents() {
