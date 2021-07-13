@@ -1,4 +1,4 @@
-package erxs.spring.springintroexercise;
+package erxs.spring.springintroexercise.appRunner;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
