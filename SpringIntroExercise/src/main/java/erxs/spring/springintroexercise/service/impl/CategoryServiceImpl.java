@@ -1,8 +1,9 @@
-package erxs.spring.springintroexercise.service;
+package erxs.spring.springintroexercise.service.impl;
 
 import erxs.spring.springintroexercise.constants.Constants;
 import erxs.spring.springintroexercise.models.entity.Category;
 import erxs.spring.springintroexercise.repository.CategoryRepository;
+import erxs.spring.springintroexercise.service.CategoryService;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
