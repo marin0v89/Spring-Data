@@ -1,5 +1,6 @@
 package erxs.spring.springintroexercise.appRunner;
 
+import erxs.spring.springintroexercise.models.entity.Book;
 import erxs.spring.springintroexercise.service.AuthorService;
 import erxs.spring.springintroexercise.service.BookService;
 import erxs.spring.springintroexercise.service.CategoryService;
@@ -25,6 +26,36 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         seedComponents();
+
+        //Problem solutions
+        problemOne(2000);
+        problemTwo(1990);
+        problemThree();
+        problemFour("George", "Powell");
+    }
+
+    private void problemFour(String firstName, String lastName) {
+        bookService.findAllBooksByAuthor(firstName, lastName)
+                .forEach(System.out::println);
+    }
+
+    private void problemThree() {
+        authorService.getAllAuthorsByBooks()
+                .forEach(System.out::println);
+    }
+
+    private void problemTwo(int year) {
+        bookService
+                .findAllAuthorsAfterYear(year)
+                .forEach(System.out::println);
+    }
+
+    private void problemOne(int year) {
+        bookService
+                .findAllBooksAfterYear(year)
+                .stream()
+                .map(Book::getTitle)
+                .forEach(System.out::println);
     }
 
     private void seedComponents() throws IOException {
