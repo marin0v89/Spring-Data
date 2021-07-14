@@ -2,6 +2,7 @@ package erxs.spring.springintroexercise.models.entity;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -20,7 +21,7 @@ public class Book extends BaseEntity {
     @Column(name = "copies")
     private Integer copies;
     @Column(name = "release_date")
-    private LocalDateTime releaseDate;
+    private LocalDate releaseDate;
     @Enumerated
     private AgeRestriction ageRestriction;
     @ManyToOne
@@ -29,6 +30,17 @@ public class Book extends BaseEntity {
     private Set<Category> categories;
 
     public Book() {
+    }
+
+    public Book(EditionType editionType, LocalDate releaseDate, Integer copies, BigDecimal price, AgeRestriction ageRestriction, String title, Author author, Set<Category> categories) {
+        this.editionType = editionType;
+        this.releaseDate = releaseDate;
+        this.copies = copies;
+        this.price = price;
+        this.ageRestriction = ageRestriction;
+        this.title = title;
+        this.author = author;
+        this.categories = categories;
     }
 
     public String getTitle() {
@@ -71,11 +83,11 @@ public class Book extends BaseEntity {
         this.copies = copies;
     }
 
-    public LocalDateTime getReleaseDate() {
+    public LocalDate getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(LocalDateTime releaseDate) {
+    public void setReleaseDate(LocalDate releaseDate) {
         this.releaseDate = releaseDate;
     }
 

@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -32,5 +35,27 @@ public class CategoryServiceImpl implements CategoryService {
                     var category = new Category(catName);
                     categoryRepository.save(category);
                 });
+    }
+
+    @Override
+    public Set<Category> getRandomCategories() {
+        Set<Category> categories = new HashSet<>();
+        int randomInt = ThreadLocalRandom
+                .current()
+                .nextInt(1, 3);
+
+        long count = categoryRepository.count();
+
+        for (int i = 0; i < randomInt; i++) {
+            long rand = ThreadLocalRandom
+                    .current().nextLong(1, count + 1);
+
+            Category category = categoryRepository
+                    .findById(rand)
+                    .orElse(null);
+
+            categories.add(category);
+        }
+        return categories;
     }
 }

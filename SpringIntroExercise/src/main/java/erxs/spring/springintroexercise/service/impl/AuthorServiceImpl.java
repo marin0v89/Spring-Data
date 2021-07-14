@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 public class AuthorServiceImpl implements AuthorService {
@@ -29,12 +30,23 @@ public class AuthorServiceImpl implements AuthorService {
         Files
                 .readAllLines(Path.of(Constants.AUTHORS_FILE_PATH))
                 .forEach(row -> {
-                    String[] firstName = row.split("\\s+");
-                    String[] lastName = row.split("\\s+");
-                    var author = new Author(firstName[0], lastName[1]);
+                    String[] fullName = row.split("\\s+");
+                    var author = new Author(fullName[0], fullName[1]);
                     authorRepository.save(author);
                 });
 
 
+    }
+
+    @Override
+    public Author getRandomAuthor() {
+        long randomAuthor =
+                ThreadLocalRandom
+                        .current()
+                        .nextLong(1, authorRepository.count() + 1);
+
+        return authorRepository
+                .findById(randomAuthor)
+                .orElse(null);
     }
 }
