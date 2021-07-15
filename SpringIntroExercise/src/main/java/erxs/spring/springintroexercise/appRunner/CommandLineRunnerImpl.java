@@ -27,11 +27,11 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
 
         seedComponents();
 
-        //Problem solutions
-        problemOne(2000);
-        problemTwo(1990);
-        problemThree();
-        problemFour("George", "Powell");
+//        Problem solutions
+//        problemOne(2000);
+//        problemTwo(1990);
+//        problemThree();
+//        problemFour("George", "Powell");
     }
 
     private void problemFour(String firstName, String lastName) {
