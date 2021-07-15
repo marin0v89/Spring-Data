@@ -1,5 +1,6 @@
 package erxs.spring.springintroexercise.service;
 
+import erxs.spring.springintroexercise.models.entity.AgeRestriction;
 import erxs.spring.springintroexercise.models.entity.Author;
 import erxs.spring.springintroexercise.models.entity.Book;
 
@@ -15,5 +16,5 @@ public interface BookService {
 
     List<String> findAllBooksByAuthor(String firstName,String lastName);
 
-
+    List<Book> findAllByAgeRestriction(AgeRestriction ageRestriction);
 }
