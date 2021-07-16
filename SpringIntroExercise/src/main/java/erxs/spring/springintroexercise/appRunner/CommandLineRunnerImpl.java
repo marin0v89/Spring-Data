@@ -44,7 +44,31 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
             case 2 -> goldenBooks();
             case 3 -> booksByPrice();
             case 4 -> notReleasedBook();
+            case 5 -> booksReleasedBeforeDate();
+            case 6 -> authorsSearch();
         }
+    }
+
+    private void authorsSearch() throws IOException {
+        System.out.println("Please enter the string that author`s name ends with :");
+        String endsWith = bufferedReader.readLine();
+
+        authorService
+                .findAuthorsWhosFirstNameEndsWith(endsWith)
+                .forEach(System.out::println);
+
+    }
+
+    private void booksReleasedBeforeDate() throws IOException {
+        System.out.println("Please enter date format :");
+        String[] dateFormat = bufferedReader.readLine().split("-");
+        int day = Integer.parseInt(dateFormat[0]);
+        int month = Integer.parseInt(dateFormat[1]);
+        int year = Integer.parseInt(dateFormat[2]);
+
+        bookService
+                .findBooksReleasedBeforeDate(day, month, year)
+                .forEach(System.out::println);
     }
 
     private void notReleasedBook() throws IOException {
