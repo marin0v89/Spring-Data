@@ -11,4 +11,6 @@ public interface AuthorService {
     Author getRandomAuthor();
 
     List<String> getAllAuthorsByBooks();
+
+    List<String> findAuthorsWhosFirstNameEndsWith(String endsWith);
 }
