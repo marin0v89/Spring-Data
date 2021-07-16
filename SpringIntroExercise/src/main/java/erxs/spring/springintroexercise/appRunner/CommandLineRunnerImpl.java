@@ -46,7 +46,56 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
             case 4 -> notReleasedBook();
             case 5 -> booksReleasedBeforeDate();
             case 6 -> authorsSearch();
+            case 7 -> bookSearch();
+            case 8 -> bookTitleSearch();
+            case 9 -> countBooks();
+            case 10 -> totalBooksCopies();
+            case 11 -> reducedBook();
         }
+    }
+
+    private void reducedBook() throws IOException {
+        System.out.println("Please enter a title :");
+        String title = bufferedReader.readLine();
+        System.out.println(bookService
+                .findBookByTitle(title));
+    }
+
+    private void totalBooksCopies() {
+        authorService
+                .findAllAuthorsTotalCopies()
+                .forEach(System.out::println);
+
+    }
+
+    private void countBooks() throws IOException {
+        System.out.println("Please enter title length :");
+        int length = Integer.parseInt(bufferedReader.readLine());
+
+        int titlesCount = bookService.
+                countAllBooksWithLength(length);
+
+        System.out.printf
+                ("There are %d books with longer title than %d symbols%n"
+                        , titlesCount
+                        , length);
+    }
+
+    private void bookTitleSearch() throws IOException {
+        System.out.println("Please enter string that author`s last name starts with :");
+        String startsWith = bufferedReader.readLine();
+        bookService
+                .findBookTitleWritenByAuthor(startsWith)
+                .forEach(System.out::println);
+    }
+
+    private void bookSearch() throws IOException {
+        System.out.println("Please enter string that title of the book ends with");
+        String contains = bufferedReader.readLine().toLowerCase();
+
+        bookService
+                .findBooksThatTitleContains(contains)
+                .forEach(System.out::println);
     }
 
     private void authorsSearch() throws IOException {
