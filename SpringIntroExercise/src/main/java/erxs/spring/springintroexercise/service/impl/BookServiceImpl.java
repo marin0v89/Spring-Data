@@ -111,12 +111,23 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<String> findNotReleasedBooks(int year) {
-        LocalDate lower = LocalDate.of(year,1,1);
-        LocalDate upper = LocalDate.of(year,12,31);
+        LocalDate lower = LocalDate.of(year, 1, 1);
+        LocalDate upper = LocalDate.of(year, 12, 31);
         return bookRepository
-                .findAllByReleaseDateBeforeOrReleaseDateAfter(lower,upper)
+                .findAllByReleaseDateBeforeOrReleaseDateAfter(lower, upper)
                 .stream()
                 .map(Book::getTitle)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<String> findBooksReleasedBeforeDate(int date, int month, int year) {
+                return bookRepository.findAllByReleaseDateBefore(LocalDate.of(year, month, date))
+                .stream()
+                .map(book -> String.format("%s %s %.2f",
+                        book.getTitle(),
+                        book.getEditionType(),
+                        book.getPrice()))
                 .collect(Collectors.toList());
     }
 
