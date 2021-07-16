@@ -2,6 +2,7 @@ package erxs.spring.springintroexercise.service.impl;
 
 import erxs.spring.springintroexercise.constants.Constants;
 import erxs.spring.springintroexercise.models.entity.Author;
+import erxs.spring.springintroexercise.models.entity.Book;
 import erxs.spring.springintroexercise.repository.AuthorRepository;
 import erxs.spring.springintroexercise.service.AuthorService;
 import org.springframework.stereotype.Service;
@@ -71,9 +72,26 @@ public class AuthorServiceImpl implements AuthorService {
                 .findAllByFirstNameEndingWith(endsWith)
                 .stream()
                 .map(author -> String.format("%s %s"
-                        ,author.getFirstName()
-                        ,author.getLastName()))
+                        , author.getFirstName()
+                        , author.getLastName()))
                 .collect(Collectors.toList());
 
+    }
+
+    @Override
+    public List<String> findAllAuthorsTotalCopies() {
+        return authorRepository
+                .findAll()
+                .stream()
+                .map(author -> String.format("%s %s - %d"
+                          , author.getFirstName()
+                          , author.getLastName()
+                          , author
+                                  .getBooks()
+                                  .stream()
+                                  .map(Book::getCopies)
+                                  .reduce(Integer::sum)
+                                  .orElse(0)))
+                .collect(Collectors.toList());
     }
 }
