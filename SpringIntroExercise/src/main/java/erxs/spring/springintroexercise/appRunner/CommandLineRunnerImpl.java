@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.Locale;
 
 @Component
 public class CommandLineRunnerImpl implements CommandLineRunner {
@@ -42,7 +41,29 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
 
         switch (exNumber) {
             case 1 -> bookTitleByAgeRestriction();
+            case 2 -> goldenBooks();
+            case 3 -> booksByPrice();
+            case 4 -> notReleasedBook();
         }
+    }
+
+    private void notReleasedBook() throws IOException {
+        System.out.println("Please enter year :");
+        int year = Integer.parseInt(bufferedReader.readLine());
+
+        bookService.findNotReleasedBooks(year)
+                .forEach(System.out::println);
+    }
+
+    private void booksByPrice() {
+        bookService.findAllBooksByPrice()
+                .forEach(System.out::println);
+    }
+
+    private void goldenBooks() {
+        bookService
+                .findAllGoldBooks()
+                .forEach(System.out::println);
     }
 
     private void bookTitleByAgeRestriction() throws IOException {
