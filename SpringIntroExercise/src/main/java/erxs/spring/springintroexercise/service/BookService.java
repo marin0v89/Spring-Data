@@ -14,7 +14,13 @@ public interface BookService {
 
     List<String> findAllAuthorsAfterYear(int year);
 
-    List<String> findAllBooksByAuthor(String firstName,String lastName);
+    List<String> findAllBooksByAuthor(String firstName, String lastName);
 
     List<Book> findAllByAgeRestriction(AgeRestriction ageRestriction);
+
+    List<String> findAllGoldBooks();
+
+    List<String> findAllBooksByPrice();
+
+    List<String> findNotReleasedBooks(int year);
 }
