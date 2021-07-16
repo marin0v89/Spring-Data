@@ -122,12 +122,52 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<String> findBooksReleasedBeforeDate(int date, int month, int year) {
-                return bookRepository.findAllByReleaseDateBefore(LocalDate.of(year, month, date))
+        return bookRepository.findAllByReleaseDateBefore(LocalDate.of(year, month, date))
                 .stream()
                 .map(book -> String.format("%s %s %.2f",
                         book.getTitle(),
                         book.getEditionType(),
                         book.getPrice()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<String> findBooksThatTitleContains(String contains) {
+        return bookRepository
+                .findAllByTitleContaining(contains)
+                .stream()
+                .map(Book::getTitle)
+                .collect(Collectors.toList());
+
+    }
+
+    @Override
+    public List<String> findBookTitleWritenByAuthor(String startsWith) {
+        return bookRepository
+                .findAllByAuthor_LastNameStartsWith(startsWith)
+                .stream()
+                .map(book -> String.format("%s (%s %s)"
+                        , book.getTitle()
+                        , book.getAuthor().getFirstName()
+                        , book.getAuthor().getLastName()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public int countAllBooksWithLength(int length) {
+        return bookRepository.countOfBooksWithTitleLengthMoreThan(length);
+    }
+
+    @Override
+    public List<String> findBookByTitle(String title) {
+        return bookRepository
+                .findBookByTitle(title)
+                .stream()
+                .map(book -> String.format("%s %s %s %.2f"
+                        , book.getTitle()
+                        , book.getEditionType()
+                        , book.getAgeRestriction()
+                        , book.getPrice()))
                 .collect(Collectors.toList());
     }
 
