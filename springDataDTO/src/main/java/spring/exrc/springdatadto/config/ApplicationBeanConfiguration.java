@@ -5,6 +5,8 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.spi.MappingContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import spring.exrc.springdatadto.model.dto.GameAddDto;
+import spring.exrc.springdatadto.model.entity.Game;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -26,6 +28,10 @@ public class ApplicationBeanConfiguration {
             }
         };
 
-        return modelMapper;
+        modelMapper.addConverter(localDateConverter);
+//        modelMapper
+//                .typeMap(GameAddDto.class, Game.class)
+//                .addMappings(mapper -> mapper.map(GameAddDto::getThumbnailURL, Game::setImageThumbnail));
+       return modelMapper;
     }
 }
