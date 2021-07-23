@@ -1,6 +1,7 @@
 package spring.exrc.springdatadto.service.impl;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
 import spring.exrc.springdatadto.model.dto.UserLoginDto;
 import spring.exrc.springdatadto.model.dto.UserRegisterDto;
 import spring.exrc.springdatadto.model.entity.User;
@@ -10,7 +11,7 @@ import spring.exrc.springdatadto.util.ValidationUtil;
 
 import javax.validation.ConstraintViolation;
 import java.util.Set;
-
+@Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
