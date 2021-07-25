@@ -3,6 +3,7 @@ package json.exr.json.service.impl;
 import com.google.gson.Gson;
 import json.exr.json.constants.RootPath;
 import json.exr.json.model.dto.UserSeedDto;
+import json.exr.json.model.dto.UserSoldDto;
 import json.exr.json.model.entity.Users;
 import json.exr.json.repository.UserRepository;
 import json.exr.json.service.UserService;
@@ -14,7 +15,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
 import static json.exr.json.constants.RootPath.*;
 
@@ -55,5 +58,14 @@ public class UserServiceImpl implements UserService {
         return userRepository
                 .findById(randomId)
                 .orElse(null);
+    }
+
+    @Override
+    public List<UserSoldDto> findAllUsersWithMoreThanOneSell() {
+
+        return userRepository.findAllUsersWithMoreThanOneSoldProduct()
+                .stream()
+                .map(users -> modelMapper.map(users, UserSoldDto.class))
+                .collect(Collectors.toList());
     }
 }
