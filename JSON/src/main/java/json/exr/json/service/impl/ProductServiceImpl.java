@@ -1,6 +1,7 @@
 package json.exr.json.service.impl;
 
 import com.google.gson.Gson;
+import json.exr.json.model.dto.ProductNameAndPriceDto;
 import json.exr.json.model.dto.ProductSeedDto;
 import json.exr.json.model.entity.Products;
 import json.exr.json.repository.ProductRepository;
@@ -16,6 +17,8 @@ import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static json.exr.json.constants.RootPath.RESOURCE_DIRECTORY;
 
@@ -58,7 +61,7 @@ public class ProductServiceImpl implements ProductService {
                     Products products = modelMapper.map(productSeedDto, Products.class);
                     products.setSeller(userService.findRandomUser());
 
-                    if (products.getPrice().compareTo(BigDecimal.valueOf(500L)) > 0) {
+                    if (products.getPrice().compareTo(BigDecimal.valueOf(900L)) > 0) {
                         products.setBuyer(userService.findRandomUser());
                     }
                     products.setCategories(categoryService.findRandomCategories());
@@ -66,5 +69,23 @@ public class ProductServiceImpl implements ProductService {
                     return products;
                 })
                 .forEach(productRepository::save);
+    }
+
+    @Override
+    public List<ProductNameAndPriceDto> findAllProductsInRangeOrderByPrice(BigDecimal lower, BigDecimal upper) {
+        return productRepository
+                .findAllByPriceBetweenAndBuyerIsNullOrderByPriceDesc(lower, upper)
+                .stream()
+                .map(products -> {
+                    ProductNameAndPriceDto productNameAndPriceDto = modelMapper
+                            .map(products, ProductNameAndPriceDto.class);
+
+                    productNameAndPriceDto.setSeller(String.format("%s %s ",
+                            products.getSeller().getFirstName(),
+                            products.getSeller().getLastName()));
+
+                    return productNameAndPriceDto;
+                })
+                .collect(Collectors.toList());
     }
 }
