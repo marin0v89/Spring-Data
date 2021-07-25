@@ -1,9 +1,6 @@
 package json.exr.json.model.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Set;
 
 @Entity
@@ -13,6 +10,7 @@ public class Users extends BaseEntity {
     private String lastName;
     private Integer age;
     private Set<Users> friends;
+    private Set<Products> soldProducts;
 
     public Users() {
     }
@@ -51,5 +49,14 @@ public class Users extends BaseEntity {
 
     public void setFriends(Set<Users> friends) {
         this.friends = friends;
+    }
+
+    @OneToMany(mappedBy = "seller", fetch = FetchType.EAGER)
+    public Set<Products> getSoldProducts() {
+        return soldProducts;
+    }
+
+    public void setSoldProducts(Set<Products> soldProducts) {
+        this.soldProducts = soldProducts;
     }
 }
